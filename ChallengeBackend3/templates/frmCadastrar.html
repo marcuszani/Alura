@@ -1,0 +1,46 @@
+{{ define "frmCadastrar.html" }}
+
+{{template "_head.html"}}
+
+    <h1>Cadastrar</h1>
+    {{template "_menu.html"}}
+    <center>
+        <h1>IMPORTAR TRANSAÇÕES</h1>
+
+    <form action="/cadastrar/novo" enctype="multipart/form-data" method="POST">
+
+        <div>
+            <input class="form-control" type="file" placeholder="Procurar" id="meuArquivo" name="meuArquivo" 
+            accept="text/csv"
+            required />
+            <br>
+            <label for="meuArquivo">Selecionar o Arquivo para fazer o Upload</label>
+        </div>
+        <br>
+        <button type="submit">Importar</button>
+
+    </form>
+</center>
+    <center>
+        <h1>TRANSAÇÕES IMPORTADAS</h1>
+
+
+      <table border="1">
+        <tr>
+            <th>Nome do Arquivo</th>
+            <th>Data da Transação</th>
+            <th>Data da Importação</th>
+        </tr>
+        {{ range .objetosImportados}}
+        <tr>
+            <td>{{ .NomeArquivo }}</td>
+            <td>{{ .DataTransacao.Format "02/01/2006" }}</td>
+            <td>{{ .DataImportacao.Format "02/01/2006" }}</td>
+        </tr>
+        {{end}}
+    </table>
+
+</center>
+
+{{template "_footer.html"}}
+{{ end }}

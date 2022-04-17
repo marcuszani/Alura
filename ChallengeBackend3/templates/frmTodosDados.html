@@ -1,0 +1,45 @@
+{{ define "frmTodosDados.html" }}
+
+{{template "_head.html"}}
+
+    <h1>Relatorio Todos os Dados</h1>
+    {{template "_menu.html"}}
+
+
+
+
+
+
+
+
+    <center>
+        <h1>TRANSAÇÕES IMPORTADAS</h1>
+      <table border="1">
+        <tr>
+            <th>Banco de Origem</th>
+            <th>Agencia de Origem</th>
+            <th>Conta de Origem</th>
+            <th>Banco de Destino</th>
+            <th>Agencia de Destino</th>
+            <th>Conta de Destino</th>
+            <th>Valores</th>
+            <th>Data da Transação</th>
+        </tr>
+        {{ range .objetosImportados}}
+        <tr>            
+            <td>{{ .BancoOrigem }}</td>
+            <td>{{ .AgenciaOrigem }}</td>
+            <td>{{ .ContaOrigem }}</td>
+            <td>{{ .BancoDestino }}</td>
+            <td>{{ .AgenciaDestino }}</td>
+            <td>{{ .ContaDestino }}</td>
+            <td>{{ .Valores }}</td>
+            <td>{{ .DataHoraTransacao.Format "02/01/2006 15:04:05" }}</td>
+        </tr>
+        {{end}}
+    </table>
+
+</center>
+
+{{template "_footer.html"}}
+{{ end }}
