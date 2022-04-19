@@ -1,0 +1,44 @@
+{{ define "frmCadastrarUsuario.html" }}
+
+{{template "_head.html"}}
+<h1>Cadastro de Usuario</h1>
+{{template "_menu.html"}}
+      <form action="/usuarios/cadastrar/novo" method="POST">
+        <center>
+        <label for="nome">Nome</label>
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do usuário" required
+        maxlength="200">
+        <label for="email">E-mail</label>
+        <input type="text" class="form-control" id="email" name="email" placeholder="E-mail para cadastro" required
+        maxlength="200">
+        
+        <button type="submit" class="btn btn-success">
+            Salvar
+          </button>
+        </center>
+<br>
+<center>
+
+  <table border="1">
+    <tr>
+      <th>Nome</th>
+      <th>E-mail</th>
+      <th>Senha</th>
+    </tr>
+
+  {{ range .Usuarios }}
+  <tr>
+      <td>{{ .Nome }}</td>
+      <td>{{ .Email }}</td>
+      <td>{{ .Senha }}</td>
+  </tr>
+  {{end}}
+</table>
+</center>
+
+
+
+      </form>
+
+{{template "_footer.html"}}
+{{end}}

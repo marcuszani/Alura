@@ -10,5 +10,6 @@ func RunMigrations(db *gorm.DB) {
 	db.AutoMigrate(
 		entities.ArquivoCSV{},
 		entities.ArquivosImportados{},
+		entities.Usuarios{},
 	)
 }
