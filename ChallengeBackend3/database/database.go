@@ -30,7 +30,6 @@ func StartDB() {
 	config.SetConnMaxLifetime(time.Hour)
 
 	migrations.RunMigrations(db)
-
 }
 
 func GetDatabase() *gorm.DB {

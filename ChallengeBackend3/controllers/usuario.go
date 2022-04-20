@@ -39,6 +39,7 @@ func CriarUsuario(c *gin.Context) {
 		return
 	} else {
 		c.String(http.StatusOK, "Usuario Cadastrado com sucesso.")
+		c.Redirect(http.StatusMovedPermanently, "/usuarios/cadastrar")
 	}
 
 }
@@ -71,4 +72,28 @@ func EncriptarSenha(senha string) (string, error) {
 func VerificarSenhaEncriptada(senha, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(senha))
 	return err == nil
+}
+
+func DeletarUsuario(c *gin.Context) {
+	id := c.Request.URL.Query().Get("id")
+
+	models.DeletarUsuario(id)
+
+	c.Redirect(http.StatusMovedPermanently, "/usuarios/cadastrar")
+
+}
+
+func EditarUsuario(c *gin.Context) {
+
+	usuario := entities.Usuarios{
+		Nome:  c.Request.FormValue("nome"),
+		Email: c.Request.FormValue("email"),
+	}
+
+	fmt.Println(usuario)
+
+}
+
+func FrmEditarUsuario(c *gin.Context) {
+	fmt.Println(c.Param("id"))
 }

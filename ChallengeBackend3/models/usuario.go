@@ -48,3 +48,37 @@ func BuscarUsuarioPorEmail(email string) bool {
 	return contagem >= 1
 
 }
+
+func DeletarUsuario(id string) {
+	usuario := entities.Usuarios{}
+
+	db := database.GetDatabase()
+
+	err := db.Where("id = ?", id).Delete(&usuario).Error
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+}
+
+func EditarUsuario(usuario *entities.Usuarios) {
+	db := database.GetDatabase()
+
+	db.Save(&usuario)
+}
+
+func VerificarUsuarios() bool {
+	db := database.GetDatabase()
+
+	var contagem int64
+	usuario := entities.Usuarios{}
+
+	err := db.First(&usuario).Count(&contagem).Error
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return contagem <= 0
+}

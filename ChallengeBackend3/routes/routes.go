@@ -16,4 +16,7 @@ func CarregarRotas(r *gin.Engine) {
 	r.GET("/usuarios/cadastrar", controllers.FrmCadastroUsuario)
 	r.POST("/usuarios/cadastrar/novo", controllers.CriarUsuario)
 
+	r.GET("/usuarios/deletar", controllers.DeletarUsuario)
+	r.GET("usuarios/editar/:id", controllers.FrmEditarUsuario)
+	//r.GET("/usuarios/editar/:id", controllers.EditarUsuario)
 }
