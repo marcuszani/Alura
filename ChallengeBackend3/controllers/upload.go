@@ -70,11 +70,32 @@ func NovaImportacao(c *gin.Context) {
 		DataImportacao: time.Now().Local(),
 	}
 
-	if models.NovaImportacao(&dadosDoArquivo) {
+	_, idTransacao := models.NovaImportacao(&dadosDoArquivo)
+
+	if true {
 
 		fmt.Println("Nome do Arquivo: ", handler.Filename)
+		fmt.Println("O id da transação é:", idTransacao)
 
-		err = models.ImportarCSV(dados)
+		dadosCorrigidos := []entities.ArquivoCSV{}
+
+		for _, itens := range *dados {
+			linhas := entities.ArquivoCSV{
+				ArquivosImportadosID: idTransacao,
+				BancoOrigem:          itens.BancoOrigem,
+				AgenciaOrigem:        itens.AgenciaOrigem,
+				ContaOrigem:          itens.ContaOrigem,
+				BancoDestino:         itens.BancoDestino,
+				AgenciaDestino:       itens.AgenciaDestino,
+				ContaDestino:         itens.ContaDestino,
+				Valores:              itens.Valores,
+				DataHoraTransacao:    itens.DataHoraTransacao,
+			}
+
+			dadosCorrigidos = append(dadosCorrigidos, linhas)
+		}
+
+		err = models.ImportarCSV(&dadosCorrigidos)
 
 		if err != nil {
 			fmt.Println("Erro ao cadastrar no banco", err)
@@ -160,7 +181,12 @@ func converterCsvParaStruct(csvLines [][]string) (dados *[]entities.ArquivoCSV, 
 }
 
 func RelatorioDados(c *gin.Context) {
-	resultados := models.BuscarTodosDados()
 
-	c.HTML(http.StatusOK, "frmTodosDados.html", gin.H{"objetosImportados": resultados})
+	transacao := models.BuscarImportacoesPorID(c.Params.ByName("id"))
+	detalhes := models.BuscarTodosDadosPorID(c.Params.ByName("id"))
+
+	c.HTML(http.StatusOK, "frmTodosDados.html", gin.H{
+		"objetosImportados": detalhes,
+		"dadosTransacao":    transacao,
+	})
 }

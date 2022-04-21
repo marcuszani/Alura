@@ -1,0 +1,26 @@
+{{ define "frmAlterarUsuario.html" }}
+
+{{template "_head.html"}}
+{{ template "_menu.html"}}
+<h1>Alterar Usuario</h1>
+
+      <form action="/usuarios/editar/{{ .Usuario.ID}}/salvar" method="POST">
+        <label for="id">ID</label>
+        <input type="text" class="form-control" id="id" name="id" placeholder="Nome do usuário" required
+        maxlength="200" value="{{ .Usuario.ID}}">
+        <label for="nome">Nome</label>
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do usuário" required
+        maxlength="200" value="{{ .Usuario.Nome}}">
+        <label for="email">E-mail</label>
+        <input type="text" class="form-control" id="email" name="email" placeholder="E-mail para cadastro" required
+        maxlength="200" value="{{ .Usuario.Email }}">
+        
+        <button type="submit" class="btn btn-success">
+            Salvar
+          </button>
+        </center>
+<br>
+      </form>
+
+{{template "_footer.html"}}
+{{end}}

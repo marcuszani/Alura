@@ -19,7 +19,7 @@ func ImportarCSV(itens *[]entities.ArquivoCSV) error {
 
 }
 
-func NovaImportacao(dadosDoArquivo *entities.ArquivosImportados) bool {
+func NovaImportacao(dadosDoArquivo *entities.ArquivosImportados) (bool, uint) {
 
 	db := database.GetDatabase()
 
@@ -45,7 +45,7 @@ func NovaImportacao(dadosDoArquivo *entities.ArquivosImportados) bool {
 
 	}
 
-	return ArquivoJaExiste
+	return ArquivoJaExiste, dadosDoArquivo.ID
 
 }
 
@@ -64,12 +64,26 @@ func BuscarTodasImportacoes() *[]entities.ArquivosImportados {
 
 }
 
-func BuscarTodosDados() *[]entities.ArquivoCSV {
+func BuscarImportacoesPorID(id string) *entities.ArquivosImportados {
+	db := database.GetDatabase()
+
+	importado := entities.ArquivosImportados{}
+
+	err := db.Where("id = ?", id).First(&importado).Error
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	return &importado
+
+}
+
+func BuscarTodosDadosPorID(id string) *[]entities.ArquivoCSV {
 	db := database.GetDatabase()
 
 	dados := []entities.ArquivoCSV{}
 
-	err := db.Order("data_hora_transacao desc").Find(&dados).Error
+	err := db.Where("arquivos_importados_id = ?", id).Order("data_hora_transacao desc").Find(&dados).Error
 
 	if err != nil {
 		fmt.Println(err)

@@ -18,13 +18,14 @@ func main() {
 
 	r := gin.New()
 
-	templ := template.Must(template.New("").ParseFS(server, "templates/*html"))
+	templ := template.Must(template.New("").ParseFS(server, "templates/**/*html"))
 
 	r.SetHTMLTemplate(templ)
 
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 	r.SetTrustedProxies([]string{"localhost"})
+	routes.CarregarRotasAuth(r)
 	routes.CarregarRotas(r)
 	//r.LoadHTMLGlob("templates/*")
 	r.Run(":8000")

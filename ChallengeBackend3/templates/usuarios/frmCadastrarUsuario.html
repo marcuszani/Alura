@@ -1,8 +1,9 @@
 {{ define "frmCadastrarUsuario.html" }}
 
 {{template "_head.html"}}
+{{ template "_menu.html"}}
 <h1>Cadastro de Usuario</h1>
-{{template "_menu.html"}}
+
       <form action="/usuarios/cadastrar/novo" method="POST">
         <center>
         <label for="nome">Nome</label>
@@ -19,7 +20,8 @@
 <br>
 <center>
 
-  <table border="1">
+
+  <table class="table table-dark table-striped  text-left">
     <tr>
       <th>Nome</th>
       <th>E-mail</th>
@@ -30,7 +32,7 @@
   <tr>
       <td>{{ .Nome }}</td>
       <td>{{ .Email }}</td>
-      <td><a href="/usuarios/editar/{{ .ID }}">Editar</a> <a href="/usuarios/deletar?id={{ .ID }}">Deletar</a></td>
+      <td><a href="/usuarios/editar/{{ .ID }}" class="btn btn-primary">Editar</a> <a href="/usuarios/deletar/{{ .ID }}" class="btn btn-danger">Deletar</a></td>
   </tr>
   {{end}}
 </table>

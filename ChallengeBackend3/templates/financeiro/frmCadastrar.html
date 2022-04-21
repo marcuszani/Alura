@@ -1,9 +1,8 @@
 {{ define "frmCadastrar.html" }}
 
 {{template "_head.html"}}
-
+{{ template "_menu.html"}}
     <h1>Cadastrar</h1>
-    {{template "_menu.html"}}
     <center>
         <h1>IMPORTAR TRANSAÇÕES</h1>
 
@@ -25,17 +24,19 @@
         <h1>TRANSAÇÕES IMPORTADAS</h1>
 
 
-      <table border="1">
+        <table class="table table-dark table-striped  text-left">
         <tr>
             <th>Nome do Arquivo</th>
             <th>Data da Transação</th>
             <th>Data da Importação</th>
+            <th>Opções</th>
         </tr>
         {{ range .objetosImportados}}
         <tr>
             <td>{{ .NomeArquivo }}</td>
             <td>{{ .DataTransacao.Format "02/01/2006" }}</td>
             <td>{{ .DataImportacao.Format "02/01/2006" }}</td>
+            <td><a href="/todasimportacoes/{{ .ID }}" class="btn btn-primary">Detalhes</a></td>
         </tr>
         {{end}}
     </table>

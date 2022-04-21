@@ -32,6 +32,6 @@ func RunMigrations(db *gorm.DB) {
 
 }
 func EncriptarSenha(senha string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(senha), 14)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(senha), 6)
 	return string(bytes), err
 }

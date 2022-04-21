@@ -1,0 +1,35 @@
+{{ define "frmAuth.html" }}
+
+{{template "_head.html"}}
+<h1>Login</h1>
+
+<div class="container">
+    <div class="box">
+        <form action="/login" method="POST">
+            <div>
+                <center><img src="#" alt="Sistema Financeiro" width="200px"></center> 
+            </div>
+            <div class="form-group esp">
+                <label for="user" hidden><b>Usuario:</b></label>
+                <input type="text" class="form-control esp2" id="user" name="user" aria-describedby="user"
+                    placeholder="Nome de usuario:" autofocus>
+            </div>
+            <div class="form-group esp">
+                <label for="password" hidden><b>Senha:</b></label>
+                <input type="password" class="form-control esp2" id="password" name="password" placeholder="Senha de acesso">
+            </div>
+            <div class="form-check esp">
+                <input type="checkbox" class="form-check-input" id="manterLogado">
+                <label class="form-check-label" for="manterLogado">Manter Logado</label>
+            </div>
+            <button type="submit" class="btn btn-primary right" style="float: right; margin-right: 5px;"><b>Entrar</b></button>
+           
+        </form>
+    </div>
+</div>
+
+</body>
+
+</html>
+{{template "_footer.html"}}
+{{ end }}

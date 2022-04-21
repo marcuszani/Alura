@@ -26,7 +26,9 @@ func CriarUsuario(c *gin.Context) {
 		Senha: senhaEncriptada,
 	}
 
-	if models.BuscarUsuarioPorEmail(usuario.Email) {
+	valido, _ := models.BuscarUsuarioPorEmail(usuario.Email)
+
+	if valido {
 		c.String(http.StatusInternalServerError, "Email já cadastrado")
 		return
 	}
@@ -38,8 +40,11 @@ func CriarUsuario(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "Falha ao Criar usuario")
 		return
 	} else {
-		c.String(http.StatusOK, "Usuario Cadastrado com sucesso.")
 		c.Redirect(http.StatusMovedPermanently, "/usuarios/cadastrar")
+		//c.String(http.StatusOK, "Usuario Cadastrado com sucesso.")
+
+		//EnviarEmail(usuario.Email, senhaGerada)
+
 	}
 
 }
@@ -75,11 +80,17 @@ func VerificarSenhaEncriptada(senha, hash string) bool {
 }
 
 func DeletarUsuario(c *gin.Context) {
-	id := c.Request.URL.Query().Get("id")
+	//id := c.Request.URL.Query().Get("id")
 
-	models.DeletarUsuario(id)
+	id := c.Params.ByName("id")
 
-	c.Redirect(http.StatusMovedPermanently, "/usuarios/cadastrar")
+	if c.Request.FormValue("id") == "1" {
+		c.String(http.StatusInternalServerError, "Operação não permitida")
+		return
+	} else {
+		models.DeletarUsuario(id)
+		c.Redirect(http.StatusMovedPermanently, "/usuarios/cadastrar")
+	}
 
 }
 
@@ -90,10 +101,25 @@ func EditarUsuario(c *gin.Context) {
 		Email: c.Request.FormValue("email"),
 	}
 
-	fmt.Println(usuario)
+	if c.Request.FormValue("id") == "1" {
+		c.String(http.StatusInternalServerError, "Operação não permitida")
+		return
+	} else {
+		models.EditarUsuario(&usuario, c.Request.FormValue("id"))
+		c.Redirect(http.StatusMovedPermanently, "/usuarios/cadastrar")
+	}
 
 }
 
 func FrmEditarUsuario(c *gin.Context) {
-	fmt.Println(c.Param("id"))
+
+	if c.Params.ByName("id") == "1" {
+		c.String(http.StatusInternalServerError, "Operação não permitida")
+		return
+	} else {
+		usuario := models.BuscarUsuarioPorID(c.Params.ByName("id"))
+
+		c.HTML(http.StatusOK, "frmAlterarUsuario.html", gin.H{"Usuario": usuario})
+	}
+
 }

@@ -1,15 +1,25 @@
 {{ define "frmTodosDados.html" }}
 
 {{template "_head.html"}}
+{{ template "_menu.html"}}
 
-    <h1>Relatorio Todos os Dados</h1>
-    {{template "_menu.html"}}
+<center>
+    <table class="table table-dark table-striped  text-left">
+        <tr>
+            <td>Importado em:</td>
+            <td>{{ .dadosTransacao.DataImportacao.Format "02/01/2006" }}</td>
+        </tr>
+        <tr>
+            <td>Importado por:</td>
+            <td>{{ .dadosTransacao.UsuarioResp}}</td>
+        </tr>
+        <tr>
+            <td>Data Transações:</td>
+            <td>{{ .dadosTransacao.DataTransacao.Format "02/01/2006" }}</td>
+        </tr>
 
-
-
-
-
-
+    </table>
+</center>
 
 
     <center>
@@ -17,6 +27,7 @@
       <table border="1">
         <tr>
             <th>Banco de Origem</th>
+            <!-- <th>Arquivo ID</th> -->
             <th>Agencia de Origem</th>
             <th>Conta de Origem</th>
             <th>Banco de Destino</th>
@@ -28,6 +39,7 @@
         {{ range .objetosImportados}}
         <tr>            
             <td>{{ .BancoOrigem }}</td>
+            <!-- <td>{{ .ArquivosImportadosID }}</td> -->
             <td>{{ .AgenciaOrigem }}</td>
             <td>{{ .ContaOrigem }}</td>
             <td>{{ .BancoDestino }}</td>

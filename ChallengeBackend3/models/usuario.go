@@ -31,30 +31,43 @@ func TodosUsuarios() *[]entities.Usuarios {
 	}
 	return &usuarios
 }
+func BuscarUsuarioPorID(id string) *entities.Usuarios {
+	usuario := entities.Usuarios{}
 
-func BuscarUsuarioPorEmail(email string) bool {
+	db := database.GetDatabase()
+
+	err := db.Where("id = ?", id).First(&usuario).Error
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return &usuario
+}
+func BuscarUsuarioPorEmail(email string) (bool, *entities.Usuarios) {
 
 	var contagem int64
 	usuario := entities.Usuarios{}
 
 	db := database.GetDatabase()
 
-	err := db.Where("email = ?", email).First(&usuario).Count(&contagem).Error
+	err := db.Where("email = ? OR nome = ?", email, email).First(&usuario).Count(&contagem).Error
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	return contagem >= 1
+	return (contagem >= 1), &usuario
 
 }
 
 func DeletarUsuario(id string) {
+
 	usuario := entities.Usuarios{}
 
 	db := database.GetDatabase()
 
-	err := db.Where("id = ?", id).Delete(&usuario).Error
+	err := db.Where("id = ? AND id != ?", id, "1").Delete(&usuario).Error
 
 	if err != nil {
 		fmt.Println(err)
@@ -62,10 +75,10 @@ func DeletarUsuario(id string) {
 
 }
 
-func EditarUsuario(usuario *entities.Usuarios) {
+func EditarUsuario(usuario *entities.Usuarios, id string) {
 	db := database.GetDatabase()
 
-	db.Save(&usuario)
+	db.Where("id = ? AND id != ?", id, "1").Save(&usuario)
 }
 
 func VerificarUsuarios() bool {
