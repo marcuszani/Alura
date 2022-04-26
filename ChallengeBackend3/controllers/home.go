@@ -18,7 +18,8 @@ func Home(c *gin.Context) {
 	c.HTML(http.StatusOK, "frmHome.html", nil)
 }
 
-var keyuser = "usuario"
+const keyuser = "usuario"
+const userID = "usuarioID"
 
 func FrmLogin(c *gin.Context) {
 
@@ -97,6 +98,9 @@ func Login(c *gin.Context) {
 
 	session := sessions.Default(c)
 	session.Set(keyuser, username)
+	session.Set(userID, usuario.ID)
+
+	session.Save()
 
 	if err := session.Save(); err != nil {
 		c.String(http.StatusInternalServerError, "Falha ao salvar a sessão")

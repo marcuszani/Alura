@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -15,6 +16,8 @@ func CriarUsuario(c *gin.Context) {
 
 	senhaGerada := GerarSenha(6)
 	senhaEncriptada, err := EncriptarSenha(senhaGerada)
+
+	//fmt.Println("A senha é :", senhaGerada)
 
 	if err != nil {
 		fmt.Println(err)
@@ -27,6 +30,12 @@ func CriarUsuario(c *gin.Context) {
 	}
 
 	valido, _ := models.BuscarUsuarioPorEmail(usuario.Email)
+
+	err = EnviarEmail(usuario.Email, senhaGerada)
+
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	if valido {
 		c.String(http.StatusInternalServerError, "Email já cadastrado")
@@ -43,7 +52,7 @@ func CriarUsuario(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "/usuarios/cadastrar")
 		//c.String(http.StatusOK, "Usuario Cadastrado com sucesso.")
 
-		//EnviarEmail(usuario.Email, senhaGerada)
+		EnviarEmail(usuario.Email, senhaGerada)
 
 	}
 
@@ -51,7 +60,7 @@ func CriarUsuario(c *gin.Context) {
 
 func FrmCadastroUsuario(c *gin.Context) {
 
-	usuarios := models.TodosUsuarios()
+	usuarios := models.TodosUsuarios(false)
 
 	c.HTML(http.StatusOK, "frmCadastrarUsuario.html", gin.H{"Usuarios": usuarios})
 
@@ -80,17 +89,20 @@ func VerificarSenhaEncriptada(senha, hash string) bool {
 }
 
 func DeletarUsuario(c *gin.Context) {
-	//id := c.Request.URL.Query().Get("id")
 
 	id := c.Params.ByName("id")
+	session := sessions.Default(c)
+	idUsuario := fmt.Sprintf("%v", session.Get("usuarioID"))
 
-	if c.Request.FormValue("id") == "1" {
+	if (id == "1") || (id == idUsuario) {
+		fmt.Println("Operacao nao Permitida")
 		c.String(http.StatusInternalServerError, "Operação não permitida")
 		return
-	} else {
-		models.DeletarUsuario(id)
-		c.Redirect(http.StatusMovedPermanently, "/usuarios/cadastrar")
 	}
+
+	models.DeletarUsuario(id)
+
+	c.Redirect(http.StatusMovedPermanently, "/usuarios/cadastrar")
 
 }
 

@@ -24,5 +24,5 @@ type ArquivosImportados struct {
 	NomeArquivo    string
 	DataTransacao  time.Time
 	DataImportacao time.Time
-	UsuarioResp    string
+	UsuarioResp    uint
 }

@@ -18,13 +18,19 @@ func NovoUsuarioSis(usuario *entities.Usuarios) error {
 	return err
 }
 
-func TodosUsuarios() *[]entities.Usuarios {
+func TodosUsuarios(admin bool) *[]entities.Usuarios {
 
 	usuarios := []entities.Usuarios{}
 
 	db := database.GetDatabase()
 
-	err := db.Where("nome != ?", "Admin").Find(&usuarios).Error
+	var err error
+
+	if admin {
+		err = db.Find(&usuarios).Error
+	} else {
+		err = db.Where("nome != ?", "Admin").Find(&usuarios).Error
+	}
 
 	if err != nil {
 		fmt.Println(err)

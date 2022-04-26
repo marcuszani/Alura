@@ -13,18 +13,26 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
 func Cadastrar(c *gin.Context) {
 
 	resultados := models.BuscarTodasImportacoes()
+	usuarios := models.TodosUsuarios(true)
 
-	c.HTML(http.StatusOK, "frmCadastrar.html", gin.H{"objetosImportados": resultados})
+	c.HTML(http.StatusOK, "frmCadastrar.html", gin.H{
+		"objetosImportados": resultados,
+		"Usuarios":          usuarios,
+	})
 
 }
 
 func NovaImportacao(c *gin.Context) {
+
+	session := sessions.Default(c)
+
 	err := c.Request.ParseMultipartForm(10 << 20)
 
 	if err != nil {
@@ -64,10 +72,15 @@ func NovaImportacao(c *gin.Context) {
 
 	dados, dataDaTransacao := converterCsvParaStruct(csvLines)
 
+	idUsuario := fmt.Sprintf("%v", session.Get("usuarioID"))
+
+	idUsuarioConvertido, _ := strconv.ParseInt(idUsuario, 10, 32)
+
 	dadosDoArquivo := entities.ArquivosImportados{
 		NomeArquivo:    handler.Filename,
 		DataTransacao:  dataDaTransacao,
 		DataImportacao: time.Now().Local(),
+		UsuarioResp:    uint(idUsuarioConvertido),
 	}
 
 	_, idTransacao := models.NovaImportacao(&dadosDoArquivo)

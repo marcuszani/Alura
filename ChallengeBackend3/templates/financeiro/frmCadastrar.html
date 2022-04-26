@@ -29,16 +29,28 @@
             <th>Nome do Arquivo</th>
             <th>Data da Transação</th>
             <th>Data da Importação</th>
+            <th>Responsavel</th>
             <th>Opções</th>
         </tr>
-        {{ range .objetosImportados}}
+
+    {{ $Responsavel := .Usuarios}}
+
+    {{ range .objetosImportados}}
+    
         <tr>
             <td>{{ .NomeArquivo }}</td>
             <td>{{ .DataTransacao.Format "02/01/2006" }}</td>
             <td>{{ .DataImportacao.Format "02/01/2006" }}</td>
+
+            {{$IdResponsavel := .UsuarioResp}}
+
+            {{ range $Responsavel}}
+                {{if (eq $IdResponsavel .ID) }} <td>{{ .Nome}}</td> {{ end }}
+            {{ end }}
+
             <td><a href="/todasimportacoes/{{ .ID }}" class="btn btn-primary">Detalhes</a></td>
         </tr>
-        {{end}}
+    {{end}}
     </table>
 
 </center>

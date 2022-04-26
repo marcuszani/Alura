@@ -27,6 +27,7 @@ func main() {
 	r.SetTrustedProxies([]string{"localhost"})
 	routes.CarregarRotasAuth(r)
 	routes.CarregarRotas(r)
+	routes.CarregarRotasUploads(r)
 	//r.LoadHTMLGlob("templates/*")
 	r.Run(":8000")
 }

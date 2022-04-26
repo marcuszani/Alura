@@ -23,6 +23,7 @@
 
   <table class="table table-dark table-striped  text-left">
     <tr>
+      <th>ID</th>
       <th>Nome</th>
       <th>E-mail</th>
       <th>Ações</th>
@@ -30,9 +31,10 @@
 
   {{ range .Usuarios }}
   <tr>
+      <td>{{ .ID }}</td>
       <td>{{ .Nome }}</td>
       <td>{{ .Email }}</td>
-      <td><a href="/usuarios/editar/{{ .ID }}" class="btn btn-primary">Editar</a> <a href="/usuarios/deletar/{{ .ID }}" class="btn btn-danger">Deletar</a></td>
+      <td><a href="/usuarios/editar/{{ .ID }}" class="btn btn-primary">Editar</a> <a href="/usuarios/remover/{{ .ID }}" class="btn btn-danger">Deletar</a></td>
   </tr>
   {{end}}
 </table>
