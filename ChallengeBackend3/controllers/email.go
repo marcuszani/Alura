@@ -8,8 +8,6 @@ import (
 )
 
 func EnviarEmail(email, senhaSys string) error {
-	// Configuration
-	//from := "bawoweb712@wowcg.com"
 	usuario := config.Cfg.Email["Usuario"]
 
 	fmt.Println(usuario)
